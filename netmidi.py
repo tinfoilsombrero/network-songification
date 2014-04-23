@@ -24,6 +24,7 @@ class NetMidi:
 		# create the connection to the midi device	
 		self.midiout = rtmidi.MidiOut()
 		avail = self.midiout.get_ports()
+		print avail
 		if len(avail) < portNum:
 			sys.exit("Problem with IO port number given")
 		else:
@@ -42,7 +43,7 @@ class NetMidi:
 		if (prot+str(port)) in self.noteMap.keys(): # check if the mapping exists
 			mapping = self.noteMap[prot+str(port)]
 		else:
-			sys.exit("No mapping exists for "+prot+str(port))
+			return None
 		chan = int(mapping[0])
 		note = ((eph * 80)/65535) + 20
 		velo = (((size - 20) * 107) / 1480) + 20

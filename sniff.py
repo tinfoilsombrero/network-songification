@@ -9,15 +9,12 @@ from netmidi import NetMidi
 parser = OptionParser()
 parser.add_option("-i", "--interface", dest="interface", help="interface to listen on", default="eth0")
 parser.add_option("-p", "--pcap", dest="pcap", help="Use PCAP file instead of network interface. Pass path to PCAP file.", default=False)
+parser.add_option("-m", "--midiport",dest="mport", help="The midi port number to output to", default=1)
 # if you use -h this will print out a help description
 
 options, remainder = parser.parse_args() # store options in variable
-
-# start sniffing
-if options.pcap == False:
-	sniff(prn=callback, store=0, iface=options.interface) # listen to interface
-else:
-	sniff(prn=callback, store=0, offline=options.pcap) # read pcap file
+# create the NetMidi object for output
+myNetMidi = NetMidi(int(options.mport))
 
 # everytime scapy sees a packet this func will be called
 def callback(pkt):
@@ -38,3 +35,10 @@ def callback(pkt):
 		port = (pkt[ICMP].type + 1) * 10
 		eph_port (pkt[ICMP].type + 1) * 15
 		myNetMidi.playNote("ICMP", port, eph_port, size)
+
+# start sniffing
+if options.pcap == False:
+        sniff(prn=callback, store=0, iface=options.interface) # listen to interface
+else:
+        sniff(prn=callback, store=0, offline=options.pcap) # read pcap file
+
