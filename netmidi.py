@@ -24,7 +24,6 @@ class NetMidi:
 		# create the connection to the midi device	
 		self.midiout = rtmidi.MidiOut()
 		avail = self.midiout.get_ports()
-		print avail
 		if len(avail) < portNum:
 			sys.exit("Problem with IO port number given")
 		else:
@@ -47,7 +46,6 @@ class NetMidi:
 		chan = int(mapping[0])
 		note = ((eph * 80)/65535) + 20
 		velo = (((size - 20) * 107) / 1480) + 20
-		print(chan,note,velo)
 		# create a new noteplayer thread and run it
 		np = NotePlayer(chan,note,velo,self.midiout,self.threadLock)
 		np.start()
@@ -62,7 +60,6 @@ class NotePlayer (threading.Thread):
 		self.midiout = midOut
 	
 	def run(self):
-		print("starting thread")
 		self.threadLock.acquire()
 		self.midiout.send_message(self.noteOnMes)
 		self.threadLock.release()
