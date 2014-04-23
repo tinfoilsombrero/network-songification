@@ -38,7 +38,7 @@ class NetMidi:
 			self.midiout.send_message([chan,prog])
 
 	def playNote(self,prot,port,eph,size):
-		"""Plays a note on the midi channel specified by given info"""
+		"""Processes packet info and creates a new thread for playback"""
 		if (prot+str(port)) in self.noteMap.keys(): # check if the mapping exists
 			mapping = self.noteMap[prot+str(port)]
 		else:
