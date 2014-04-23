@@ -1,4 +1,4 @@
-consists of three parts: mappings.config, netmidi.py and [placeholder]
+consists of three parts: mappings.config, netmidi.py and sniff.py
 
 mappings.config is used to specify which ports+protocols should be mapped to which midi instruments. Standard MIDI allows for 16 different voices, exceeding this has will depend on your specific MIDI setup. The format is [TCP|UDP|ICMP] [Port #] [Channel # 1-16] [MIDI Program for this channel]
 eg. TCP 80 1 3
