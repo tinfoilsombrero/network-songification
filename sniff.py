@@ -33,7 +33,7 @@ def callback(pkt):
 		# ICMP packets are special
 		size = pkt[IP].len
 		port = (pkt[ICMP].type + 1) * 10
-		eph_port (pkt[ICMP].type + 1) * 15
+		eph_port = (pkt[ICMP].type + 1) * 15
 		myNetMidi.playNote("ICMP", port, eph_port, size)
 
 # start sniffing
