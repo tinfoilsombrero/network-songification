@@ -32,7 +32,7 @@ def callback(pkt):
 			myNetMidi.playNote(proto, port, eph_port, size)
 		elif pkt.haslayer(ICMP):
 			# ICMP packets are special
-			size = pkt[IP].len
+			size = 500
 			port = pkt[ICMP].type
 			eph_port = (pkt[ICMP].type + 1) * 15
 			myNetMidi.playNote("ICMP", port, eph_port, size)
