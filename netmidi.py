@@ -2,13 +2,14 @@ import time
 import rtmidi
 import sys
 import string
-import thread
+import threading
 
 class NetMidi:
 	"""Maps network fields to midi notes"""
 	def __init__(self,portNum):
 		# load the mapping file
 		self.noteMap = {}
+		self.threadLock = threading.Lock()
 		try:
 			f = open("mappings.config",'r')
 		except (OSError, IOError) as e:
@@ -27,7 +28,7 @@ class NetMidi:
 			sys.exit("Problem with IO port number given")
 		else:
 			self.midiout.open_port(portNum-1)
-#		self.__setProgs()
+			self.__setProgs()
 
 	def __setProgs(self):
 		"""Sets the channels with the instrument specified in the config file"""
@@ -43,13 +44,28 @@ class NetMidi:
 		else:
 			sys.exit("No mapping exists for "+prot+str(port))
 		chan = int(mapping[0])
-		note = ((eph * 127)/65535) + 1
-		velo = (((size - 20) * 127) / 1480) + 1
+		note = ((eph * 80)/65535) + 20
+		velo = (((size - 20) * 107) / 1480) + 20
 		print(chan,note,velo)
-		self.midiout.send_message([chan+143,note,velo])
+		# create a new noteplayer thread and run it
+		np = NotePlayer(chan,note,velo,self.midiout,self.threadLock)
+		np.start()
+	
+class NotePlayer (threading.Thread):
+	"""Plays a single note as a new thread, to allow mutliple notes at once"""
+	def __init__(self,chan,note,velo,midOut,tl):
+		threading.Thread.__init__(self)
+		self.noteOnMes = [chan+143,note,velo]
+		self.threadLock = tl
+		self.noteOffMes = [chan+127,note,0]
+		self.midiout = midOut
+	
+	def run(self):
+		print("starting thread")
+		self.threadLock.acquire()
+		self.midiout.send_message(self.noteOnMes)
+		self.threadLock.release()
 		time.sleep(0.5)
-		self.midiout.send_message([chan+127,note,0])
-
-test = NetMidi(2)
-test.playNote("TCP",80,15000,1480)
-del test
+		self.threadLock.acquire()
+		self.midiout.send_message(self.noteOffMes)
+		self.threadLock.release()
