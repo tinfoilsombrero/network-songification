@@ -26,6 +26,8 @@ Options:
                         interface to listen on
   -p PCAP, --pcap=PCAP  Use PCAP file instead of network interface. Pass path
                         to PCAP file.
+  -m MPORT --midiport=MPORT
+                        The midi port number to output to
 ```       
 
 Example: If you want to use a different interface such as the loopback device ```sniff.py -i lo0```  
