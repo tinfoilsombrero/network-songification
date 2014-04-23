@@ -3,6 +3,7 @@
 # import python libraries that we use
 from optparse import OptionParser
 from scapy.all import *
+from netmidi import NetMidi
 
 # get params from command line
 parser = OptionParser()
@@ -30,11 +31,10 @@ def callback(pkt):
 			proto = "UDP"
 			port = min([pkt[UDP].sport,pkt[UDP].dport])
 			eph_port = max([pkt[UDP].sport,pkt[UDP].dport])
-		func(proto, port, eph_port, size) # this is where midi stuff will get called
+		myNetMidi.playNote(proto, port, eph_port, size)
 	elif pkt.haslayer(ICMP):
-		print pkt.show() # if you see an icmp packet print to screen
-		# logic for icmp will come later
-
-def func(prot,port,eph,size):
-	# placeholder function
-	a = 1
+		# ICMP packets are special
+		size = pkt[IP].len
+		port = (pkt[ICMP].type + 1) * 10
+		eph_port (pkt[ICMP].type + 1) * 15
+		myNetMidi.playNote("ICMP", port, eph_port, size)
