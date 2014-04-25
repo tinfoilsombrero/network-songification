@@ -44,8 +44,8 @@ class NetMidi:
 		else:
 			return None
 		chan = int(mapping[0])
-		note = ((eph * 80)/65535) + 20
-		velo = (((size - 20) * 107) / 1480) + 20
+		note = ((eph *  40)/65535) + 40
+		velo = (((size - 20) * 87) / 1480) + 40
 		# create a new noteplayer thread and run it
 		np = NotePlayer(chan,note,velo,self.midiout,self.threadLock)
 		np.start()
