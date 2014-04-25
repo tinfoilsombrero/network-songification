@@ -18,7 +18,7 @@ options, remainder = parser.parse_args() # store options in variable
 myNetMidi = NetMidi(int(options.mport))
 
 #initialze leaky bucket algo
-bucket = TokenBucket(10, 0.2)
+bucket = TokenBucket(20, 10)
 
 # everytime scapy sees a packet this func will be called
 def callback(pkt):
