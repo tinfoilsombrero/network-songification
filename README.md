@@ -4,7 +4,7 @@ consists of three parts:
 
 * mappings.config
 * netmidi.py
-* sniff.py
+* songify.py
 
 mappings.config is used to specify which ports+protocols should be mapped to which midi instruments. Standard MIDI allows for 16 different voices, exceeding this has will depend on your specific MIDI setup. The format is ```[TCP|UDP|ICMP] [Port #] [Channel # 1-16] [MIDI Program for this channel]```  
 eg. ```TCP 80 1 3``` will cause http packets to play a note on the Electric Piano program assigned to channel 1.
@@ -18,7 +18,7 @@ eg. ```myNetMidi.playNote("TCP",80,16003,1480)``` where the parameters passed ar
 ## Using command line options
 
 ```
-Usage: sniff.py [options]
+Usage: songify.py [options]
 
 Options:
   -h, --help            show this help message and exit
@@ -30,5 +30,5 @@ Options:
                         The midi port number to output to
 ```       
 
-Example: If you want to use a different interface such as the loopback device ```sniff.py -i lo0```  
-Example: If you already have a pcap file generated from a previous network capture ```sniff.py -p /path/to/file.pcap```
+Example: If you want to use a different interface such as the loopback device ```songify.py -i lo0```  
+Example: If you already have a pcap file generated from a previous network capture ```songify.py -p /path/to/file.pcap```
