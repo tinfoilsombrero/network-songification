@@ -22,8 +22,7 @@ bucket = TokenBucket(10, 0.2)
 
 # everytime scapy sees a packet this func will be called
 def callback(pkt):
-	if bucket.tokens > 0:
-		bucket.consume(1)
+	if bucket.consume(1):
 		if IP in pkt:
 			if pkt.haslayer(TCP) or pkt.haslayer(UDP): # tcp and udp are only ones that will have port numbers
 				size = pkt[IP].len
